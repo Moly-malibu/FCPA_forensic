@@ -3,17 +3,17 @@ import streamlit as st
 import stripe
 import os
 
-# st.markdown("""
-#     <style>
-#     [data-testid="stAppViewContainer"] {
-#         background-image: url("https://static.vecteezy.com/system/resources/previews/001/984/361/non_2x/abstract-modern-pattern-background-white-and-grey-geometric-texture-vector-art-illustration.jpg");
-#         background-size: cover;
-#         background-position: center;
-#         background-repeat: no-repeat;
-#         background-attachment: fixed;
-#     }
-#     </style>
-# """, unsafe_allow_html=True)
+st.markdown("""
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/001/984/361/non_2x/abstract-modern-pattern-background-white-and-grey-geometric-texture-vector-art-illustration.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 
 def init_stripe():
@@ -33,7 +33,9 @@ def show_pricing_screen():
         st.stop()
     
     PRICE_ID = st.secrets.get("PRICE_ID", "")
-    DOMAIN = st.secrets.get("DOMAIN", "http://localhost:8501")
+    DOMAIN = st.secrets.get("DOMAIN", "https://moly-malibu-fcpa-forensic-dashboard-dp1oob.streamlit.app/Pricing")
+    
+    st.image("pricing.jpg", width=200)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
