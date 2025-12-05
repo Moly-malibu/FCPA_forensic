@@ -14,6 +14,19 @@ import hashlib
 
 from pricing import show_pricing_screen, check_active_subscription
 
+st.markdown("""
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/001/984/361/non_2x/abstract-modern-pattern-background-white-and-grey-geometric-texture-vector-art-illustration.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 magic = st.query_params.get("m", "").strip()
 if magic and hashlib.sha256(magic.encode()).hexdigest() == "c2a5f1c1c69b2d4e9f8b3d7e6c5a4f3e2d1c0b9a8f7e6d5c4b3a291807060504":
     st.session_state.paid = True

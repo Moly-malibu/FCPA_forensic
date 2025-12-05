@@ -3,6 +3,19 @@ import streamlit as st
 import stripe
 import os
 
+st.markdown("""
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/001/984/361/non_2x/abstract-modern-pattern-background-white-and-grey-geometric-texture-vector-art-illustration.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 def init_stripe():
     """Inicializa Stripe con secrets"""
     stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "")
