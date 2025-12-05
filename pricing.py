@@ -27,7 +27,6 @@ def init_stripe():
     st.stop()
 
 def show_pricing_screen():
-    """Muestra landing de precios y retorna True si pagado"""
     if not init_stripe():
         st.error("⚠️ Stripe configuration missing. Contact admin.")
         st.stop()
@@ -96,7 +95,6 @@ def show_pricing_screen():
     return False  # No pagado aún
 
 def check_active_subscription(email=None):
-    """Verifica suscripción activa (opcional)"""
     try:
         if email:
             customers = stripe.Customer.list(email=email, limit=1)
