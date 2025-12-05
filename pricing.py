@@ -19,7 +19,12 @@ st.markdown("""
 def init_stripe():
     """Inicializa Stripe con secrets"""
     stripe.api_key = st.secrets.get("STRIPE_SECRET_KEY", "")
+    PUBLISHABLE_KEY = st.secrets["STRIPE_PUBLISHABLE_KEY"]
     return bool(stripe.api_key)
+
+    if not stripe.api_key:
+        st.error("❌ Stripe API key no configurada. Revisa Secrets en Streamlit Cloud.")
+    st.stop()
 
 def show_pricing_screen():
     """Muestra landing de precios y retorna True si pagado"""

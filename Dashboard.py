@@ -12,7 +12,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import hashlib
 
-from pricing import show_pricing_screen, check_active_subscription
+
 
 st.markdown("""
     <style>
