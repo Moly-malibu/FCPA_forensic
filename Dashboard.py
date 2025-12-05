@@ -24,9 +24,9 @@ if not st.session_state.get("paid", False):
     st.switch_page("pages/0_Pricing.py")
 
 # === Ya estás dentro ===
-st.set_page_config(page_title="FCPA Sentinel AI", page_icon="shield", layout="wide")
+st.set_page_config(page_title="FCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
 st.sidebar.success("Full access active")
-st.title("FCPA Sentinel AI – Dashboard")
+st.title("FCPA Forensic & Contract Analyzer – Dashboard")
 st.success("Welcome! You have full access")
 
 # === Protección normal (para todos los demás) ===
@@ -34,26 +34,26 @@ if not st.session_state.get("paid", False):
     st.switch_page("pages/0_Pricing.py")
 
 # ← Aquí ya estás dentro seguro
-st.set_page_config(page_title="FCPA Sentinel AI", page_icon="shield", layout="wide")
+st.set_page_config(page_title="FFCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
 st.success("Full access active")
-st.title("FCPA Sentinel AI – Dashboard")
+st.title("FFCPA Forensic & Contract Analyzer – Dashboard")
 
 # === REDIRECT TO LOGIN IF NOT AUTHENTICATED ===
 if not st.session_state.get("paid", False):
     st.switch_page("pages/0_Pricing.py")
 
 # SI LLEGA AQUÍ → ya pagó → puede usar todo
-st.set_page_config(page_title="FCPA Sentinel AI – Dashboard", page_icon="shield", layout="wide")
+st.set_page_config(page_title="FCPA Forensic & Contract Analyzer – Dashboard", page_icon="shield", layout="wide")
 
-st.set_page_config(page_title="FCPA Sentinel AI", page_icon="shield", layout="wide")
+st.set_page_config(page_title="FCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
 st.sidebar.success("Paid plan active")
-st.title("FCPA Sentinel AI – Full Dashboard")
+st.title("FCPA Forensic & Contract Analyzer – Full Dashboard")
 st.success("You have full access to the forensic platform!")
 st.balloons()
 
 # === MAIN APP CONFIG ===
 st.set_page_config(
-    page_title="FCPA Sentinel AI",
+    page_title="FCPA Forensic & Contract AnalyzerI",
     page_icon="brain",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -737,7 +737,7 @@ st.title("🧠 Uncover Hidden Risks, Before They Cost Millions")
 st.sidebar.divider()
 
 st.sidebar.markdown("---")
-st.sidebar.success("FCPA Sentinel AI v1.0")
+st.sidebar.success("FCPA Analysis AI v1.0")
 st.sidebar.caption("© 2025 – All rights reserved")
 st.success("🚀 Ready for forensic analysis - 100% local processing")
 # st.info("No internet required after setup")

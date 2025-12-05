@@ -29,7 +29,7 @@ def show_pricing_screen():
         """, unsafe_allow_html=True)
         
         st.markdown('<div class="pricing-card">', unsafe_allow_html=True)
-        st.markdown("<h1 style='font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>FCPA Sentinel AI</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>FCPA Forensic & Contract Analyzer</h1>", unsafe_allow_html=True)
         st.markdown("<h2 style='color: #94a3b8;'>Enterprise FCPA Forensic Intelligence</h2>", unsafe_allow_html=True)
         st.markdown("**Detect hidden bribes, evasion patterns, and FCPA risks in seconds — 100% automated**")
         
@@ -62,7 +62,7 @@ def show_pricing_screen():
                         customer_email=email,
                         success_url=DOMAIN + "?session_id={CHECKOUT_SESSION_ID}&subscribed=true",
                         cancel_url=DOMAIN + "?cancelled=true",
-                        metadata={'plan': 'fcpa_sentinel_starter'}
+                        metadata={'plan': 'FCPA Forensic & Contract Analyzerr'}
                     )
                     st.markdown(f'<meta http-equiv="refresh" content="0;url={checkout_session.url}">', unsafe_allow_html=True)
                 except Exception as e:
