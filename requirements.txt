@@ -1,7 +1,6 @@
 streamlit 
 pdfplumber 
 pandas 
-regex==
 torch 
 torchvision 
 torchaudio 
