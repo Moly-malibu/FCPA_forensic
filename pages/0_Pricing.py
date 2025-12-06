@@ -5,28 +5,28 @@ import streamlit as st
 import stripe
 import base64
 
-def set_background(image_file):
-    """
-    Función para inyectar CSS personalizado con la imagen de fondo codificada en Base64.
-    """
-    with open(image_file, "rb") as f:
-        img_data = f.read()
-    encoded_image = base64.b64encode(img_data).decode()
+# def set_background(image_file):
+#     """
+#     Función para inyectar CSS personalizado con la imagen de fondo codificada en Base64.
+#     """
+#     with open(image_file, "rb") as f:
+#         img_data = f.read()
+#     encoded_image = base64.b64encode(img_data).decode()
     
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/jpg;base64,{encoded_image}");
-            background-size: cover; /* Cubre toda la pantalla */
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Fija el fondo al hacer scroll */
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-set_background('assets/backg4.jpg')
+#     st.markdown(
+#         f"""
+#         <style>
+#         .stApp {{
+#             background-image: url("data:image/jpg;base64,{encoded_image}");
+#             background-size: cover; /* Cubre toda la pantalla */
+#             background-repeat: no-repeat;
+#             background-attachment: fixed; /* Fija el fondo al hacer scroll */
+#         }}
+#         </style>
+#         """,
+#         unsafe_allow_html=True
+#     )
+# set_background('assets/backg4.jpg')
 
 # ===================== INITIAL SETUP =====================
 
