@@ -16,4 +16,4 @@ stripe
 Pillow 
 matplotlib
 pypdf
- 
+docx
