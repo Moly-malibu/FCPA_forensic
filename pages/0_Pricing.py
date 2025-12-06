@@ -23,7 +23,7 @@ if "stripe_ready" not in st.session_state:
     st.session_state.stripe_ready = True
 
 PRICE_ID = st.secrets["PRICE_ID"]
-DOMAIN = st.secrets["DOMAIN"]  # e.g. "http://localhost:8501" or your production URL
+DOMAIN = st.secrets["DOMAIN"]    
 
 # ===================== CHECK IF USER ALREADY PAID =====================
 def user_has_paid() -> bool:
@@ -147,10 +147,10 @@ with col2:
             st.warning("Please enter a valid corporate email")
 st.stop()
 
-# Botón secreto solo para ti (nadie lo ve)
-if st.button("👑 Owner Access", help="Solo para Monica"):
+if st.button("👑 Owner Access", help="Solo para Molly Malibu"):
     st.session_state.paid = True
     st.switch_page("Dashboard.py")
+    
 # ===================== FOOTER =====================
 st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("**Trusted by compliance teams at:** KPMG • Deloitte • PwC • EY • Baker McKenzie • Global Banks", unsafe_allow_html=True)

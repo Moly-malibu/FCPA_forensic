@@ -8,6 +8,32 @@ import time
 import json
 import os
 
+# ====================== background ======================
+
+def set_background(image_file):
+    """
+    Función para inyectar CSS personalizado con la imagen de fondo codificada en Base64.
+    """
+    with open(image_file, "rb") as f:
+        img_data = f.read()
+    encoded_image = base64.b64encode(img_data).decode()
+    
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/jpg;base64,{encoded_image}");
+            background-size: cover; /* Cubre toda la pantalla */
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Fija el fondo al hacer scroll */
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+set_background('assets/backg3.jpeg')
+
+
 # === CONFIGURACIÓN DE PÁGINA ===
 st.set_page_config(page_title="FCPA Sentinel AI - Login", page_icon="lock", layout="centered")
 
@@ -21,7 +47,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# === ARCHIVO PARA GUARDAR SECRETO (persiste entre refrescos) ===
+# === save ===
 SECRET_FILE = "user_secret.json"
 
 def load_secret():
@@ -35,11 +61,9 @@ def save_secret(email, secret):
     with open(SECRET_FILE, "w") as f:
         json.dump({"email": email, "secret": secret}, f)
 
-# Cargar secreto al iniciar (si existe)
 if "totp_secret" not in st.session_state:
     load_secret()
 
-# === SI YA ESTÁ LOGUEADO ===
 if st.session_state.get("authenticated", False):
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
@@ -55,7 +79,7 @@ if st.session_state.get("authenticated", False):
             st.rerun()
     st.stop()
 
-# === FUNCIÓN PARA GENERAR QR ===
+# ===  QR ===
 def make_qr(secret: str, email: str) -> str:
     uri = pyotp.TOTP(secret).provisioning_uri(name=email, issuer_name="FCPA Sentinel AI")
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
@@ -120,7 +144,6 @@ with col2:
                     st.error("No 2FA configured. Go to 'First Time Setup' first.")
                 else:
                     totp = pyotp.TOTP(st.session_state.totp_secret)
-                    # MODO DEMO + CÓDIGO REAL
                     if code == "123456" or totp.verify(code, valid_window=1):
                         st.session_state.authenticated = True
                         st.session_state.user = email
@@ -134,7 +157,7 @@ with col2:
         with col_b:
             st.button("Cancel", use_container_width=True)
 
-    # === PESTAÑA PRIMER USO ===
+    # ===  ===
     with tab2:
         st.warning("Use only the first time or to reset 2FA")
         new_email = st.text_input("Your email", placeholder="you@company.com", key="new_mail")
@@ -147,7 +170,7 @@ with col2:
                     secret = pyotp.random_base32()
                     st.session_state.totp_secret = secret
                     st.session_state.pending_email = new_email
-                    save_secret(new_email, secret)  # ← Se guarda para siempre
+                    save_secret(new_email, secret)   
                     qr_b64 = make_qr(secret, new_email)
 
                 st.success("2FA Ready!")

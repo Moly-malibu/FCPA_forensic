@@ -6,115 +6,62 @@ import regex as re
 from io import BytesIO
 import json
 import torch
+import os
 from transformers import pipeline, AutoTokenizer, AutoModel
 from datetime import datetime
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import hashlib
 
-
-
-st.markdown("""
-    <style>
-    [data-testid="stAppViewContainer"] {
-        background-image: url("https://static.vecteezy.com/system/resources/previews/001/984/361/non_2x/abstract-modern-pattern-background-white-and-grey-geometric-texture-vector-art-illustration.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-magic = st.query_params.get("m", "").strip()
-if magic and hashlib.sha256(magic.encode()).hexdigest() == "c2a5f1c1c69b2d4e9f8b3d7e6c5a4f3e2d1c0b9a8f7e6d5c4b3a291807060504":
-    st.session_state.paid = True
-    st.query_params.clear()
-
-# === Protección normal (todos los demás) ===
-if not st.session_state.get("paid", False):
-    st.switch_page("pages/0_Pricing.py")
-
-# === Ya estás dentro ===
 st.set_page_config(page_title="FCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
-st.sidebar.success("Full access active")
-st.title("FCPA Forensic & Contract Analyzer – Dashboard")
-st.success("Welcome! You have full access")
 
-# === Protección normal (para todos los demás) ===
+# ====================== SAVE ======================
 if not st.session_state.get("paid", False):
     st.switch_page("pages/0_Pricing.py")
 
-# ← Aquí ya estás dentro seguro
-st.set_page_config(page_title="FFCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
-st.success("Full access active")
-st.title("FFCPA Forensic & Contract Analyzer – Dashboard")
-
-# === REDIRECT TO LOGIN IF NOT AUTHENTICATED ===
-if not st.session_state.get("paid", False):
+if not (st.session_state.get("paid", False) or st.secrets.get("OWNER_MODE", False)):
     st.switch_page("pages/0_Pricing.py")
 
-# SI LLEGA AQUÍ → ya pagó → puede usar todo
-st.set_page_config(page_title="FCPA Forensic & Contract Analyzer – Dashboard", page_icon="shield", layout="wide")
+st.set_page_config(page_title="FCPA Sentinel AI – Full Access", page_icon="shield", layout="wide")
+st.title("FCPA Sentinel AI – Full Forensic Platform")
+st.success("Premium access active – Unlimited analysis")
 
-st.set_page_config(page_title="FCPA Forensic & Contract Analyzer", page_icon="shield", layout="wide")
-st.sidebar.success("Paid plan active")
-st.title("FCPA Forensic & Contract Analyzer – Full Dashboard")
-st.success("You have full access to the forensic platform!")
-st.balloons()
+# ====================== INIT ======================
+if "user" not in st.session_state:
+    st.session_state.user = "Moly Malibu (Owner)"  # Tú siempre apareces aquí
 
-# === MAIN APP CONFIG ===
+# ====================== CONFI  ======================
 st.set_page_config(
-    page_title="FCPA Forensic & Contract AnalyzerI",
+    page_title="FCPA Forensic & Contract Analyzer",
     page_icon="brain",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ================== SIDEBAR ==================
-
-st.sidebar.image("logo.jpg", width=200)
+st.sidebar.image("logo.jpg", width=200) if os.path.exists("logo.jpg") else None
+st.sidebar.success(f"Logged in as **{st.session_state.user}**")
+st.sidebar.success("Premium Access Active")
 
 st.sidebar.divider()
 
-if st.sidebar.button("Logout", type="primary", use_container_width=True):
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
-    # Opcional: borrar el secreto guardado
-    import os
-    if os.path.exists("user_secret.json"):
-        os.remove("user_secret.json")
+if st.sidebar.button("Logout", type="primary"):
+    st.session_state.clear()
     st.rerun()
 
-
-
-# === WELCOME & MAIN DASHBOARD ===
-st.sidebar.success(f"✅ Logged in as **{st.session_state.user}**")
-
-
-
-
-# HEADER CON USUARIO
-# st.title("🔍 FCPA Forensic & Contract Analyzer")
-st.markdown(f"**Welcome back, {st.session_state.user}!**")
-
-# ====================== SIDEBAR ======================
-st.sidebar.title("⚙️ Analysis Controls")
+st.sidebar.title("Analysis Controls")
 risk_threshold_high = st.sidebar.slider("High‑risk similarity threshold", 0.6, 0.95, 0.78, 0.01)
 context_window_size = st.sidebar.slider("Context window (tokens)", 5, 50, 25, 1)
 enable_semantic = st.sidebar.checkbox("Enable semantic evasion detection", value=True)
 enable_keyword_scan = st.sidebar.checkbox("Enable keyword scan", value=True)
 enable_payments = st.sidebar.checkbox("Enable suspicious payment detection", value=True)
-
-# Nueva opción para Word Cloud
 show_wordcloud = st.sidebar.checkbox("Enable Word Cloud visualization", value=True)
 
-st.sidebar.success("✅ All models loaded locally")
 
+# st.title("FCPA Forensic & Contract Analyzer")
+st.markdown(f"**Welcome back, {st.session_state.user}!**")
+st.success("You have full access to the forensic platform!")
 
-# ====================== GDPR COMPLIANCE SETUP ======================
-# 1. Consent banner  
+# ====================== GDPR & PRIVACY ======================
 if "gdpr_consent" not in st.session_state:
     st.session_state.gdpr_consent = False
 
@@ -138,21 +85,17 @@ if not st.session_state.gdpr_consent:
             st.stop()
     st.stop()
 
-# 2. Data deletion button  
 if st.sidebar.button("Delete all session data now (GDPR Right to Erasure)", type="secondary"):
     st.session_state.clear()
     st.success("All your data has been permanently deleted from this session")
     st.rerun()
 
-# 3. Privacy header
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Privacy & GDPR")
 st.sidebar.success("100% Local Processing")
 st.sidebar.caption("• No cloud storage\n• No logs\n• No third-party APIs\n• Data deleted on exit\n• No internet required after setup")
 
-# ====================== PAGE CONFIG & CSS ======================
-st.set_page_config(page_title="🔍 FCPA Forensic & Contract Analyzer – GDPR Compliant", layout="wide")
-
+# ======================  CSS ======================
 st.markdown("""
 <style>
     .main-title {font-size: 3.5rem !important; font-weight: 900; background: linear-gradient(90deg, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
@@ -161,18 +104,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
-
-# Header con badge GDPR
+# ====================== HEADER ======================
 col1, col2 = st.columns([4,1])
 with col1:
-    st.markdown("<h1 class='main-title'>🔍 FCPA Forensic & Contract Analyzer</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='main-title'>FCPA Forensic & Contract Analyzer</h1>", unsafe_allow_html=True)
+    st.markdown(f"**Welcome back, {st.session_state.user}!**")
     st.markdown("**Forensic FCPA & Anti-Bribery Intelligence – 100% Local & Private**")
 with col2:
     st.markdown('<div class="gdpr-badge">GDPR Compliant</div>', unsafe_allow_html=True)
+
 st.markdown("**AI-powered forensic analysis + contract intelligence for compliance teams**")
 
-# ====================== LOAD MODELS ======================
+# ====================== MODELOS ======================
 @st.cache_resource
 def load_models():
     nlp = spacy.load("en_core_web_sm")
@@ -200,7 +143,7 @@ def generate_wordcloud(text, focus_keywords=False, max_words=200):
     if not text or len(text.strip()) < 20:
         return None
     
-    # Stopwords extendidos para contratos legales
+    # Stopwords  
     stopwords = set([
         'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i', 
         'it', 'for', 'not', 'on', 'with', 'as', 'at', 'this', 'but', 'by',
@@ -213,14 +156,12 @@ def generate_wordcloud(text, focus_keywords=False, max_words=200):
     text_clean = re.sub(r'\s+', ' ', text_clean).strip()
     
     if focus_keywords:
-        # Enfocar en keywords de riesgo y términos frecuentes
         wc = WordCloud(
             width=1000, height=500, background_color='white',
             colormap='Reds', max_words=max_words, stopwords=stopwords,
             min_font_size=10, max_font_size=100
         ).generate(text_clean)
     else:
-        # Nube general del documento
         wc = WordCloud(
             width=1000, height=500, background_color='white',
             colormap='plasma', max_words=max_words, stopwords=stopwords,
@@ -518,27 +459,21 @@ def analyze_document(text, filename, risk_threshold_high=0.78, context_window_si
     }
 
 # ====================== UPLOAD and ANALYSIS CONTROL ======================
-# ====================== UPLOAD and ANALYSIS CONTROL ======================
 st.header("📤 Upload Documents")
 uploaded_files = st.file_uploader("PDF or TXT", type=["pdf", "txt"], accept_multiple_files=True)
 
 if not uploaded_files:
     st.info("👆 Upload a PDF contract above and click the blue button to start")
 else:
-    # Inicializar session_state
     if 'results' not in st.session_state:
         st.session_state.results = []
-    
-    # Botones de control
     col_btn1, col_btn2 = st.columns([3, 1])
     
-    # Botón principal de análisis
     if col_btn1.button("🚀 Start Forensic Analysis", type="primary", use_container_width=True):
         with col_btn2:
             progress_bar = st.progress(0)
             status_text = st.empty()
-        
-        # Reset y análisis
+    
         st.session_state.results = []
         for i, file in enumerate(uploaded_files):
             status_text.text(f"Analyzing {file.name}... ({i+1}/{len(uploaded_files)})")
@@ -552,26 +487,24 @@ else:
         status_text.success("✅ Analysis complete!")
         st.rerun()
     
-    # Usar resultados del session_state
+    
     results = st.session_state.results
     
     if results:
         st.success(f"✅ Analysis complete! {len(results)} files processed.")
         
-        # Botón re-analizar
+        
         if col_btn2.button("🔄 Re-analyze", key="reanalyze", type="secondary"):
             st.session_state.results = []
             st.rerun()
         
-        # DASHBOARD SEGURO
+        # DASHBOARD 
         df = pd.DataFrame(results)
         st.subheader("Risk Dashboard")
         
-        # Filtro con filtered_df SIEMPRE definido
         risk_filter = st.multiselect("Filter by risk level", ["HIGH", "MEDIUM", "LOW"], 
                                    default=["HIGH", "MEDIUM", "LOW"])
         
-        # filtered_df SIEMPRE definido
         if 'risk_level' in df.columns:
             filtered_df = df[df["risk_level"].isin(risk_filter)].copy()
         else:
@@ -753,5 +686,4 @@ st.sidebar.markdown("---")
 st.sidebar.success("FCPA Analysis AI v1.0")
 st.sidebar.caption("© 2025 – All rights reserved")
 st.success("🚀 Ready for forensic analysis - 100% local processing")
-# st.info("No internet required after setup")
 st.caption("Built with spaCy, Hugging Face, Sentence-Transformers — detects real-world FCPA violations including evasion tactics")
