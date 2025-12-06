@@ -7,6 +7,7 @@ from io import BytesIO
 import time
 import json
 import os
+import base64
 
 # ====================== background ======================
 
@@ -31,7 +32,7 @@ def set_background(image_file):
         """,
         unsafe_allow_html=True
     )
-set_background('assets/backg3.jpeg')
+set_background('assets/backg4.jpg')
 
 
 # === CONFIGURACIÓN DE PÁGINA ===
