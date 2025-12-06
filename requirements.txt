@@ -15,4 +15,5 @@ wordcloud
 stripe
 Pillow 
 matplotlib
+pypdf
  
